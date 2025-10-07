@@ -4,6 +4,10 @@ import { WebSocketServer } from "ws";
 import url from "url";
 
 function authenticateUpgrade(request: IncomingMessage) {
+  // get the jwt token or cookie from the header
+  // verify the token or cookie against the database
+  // if user exists return the user to socket server upgrade connection.
+  
   const authHeader = request.headers.authorization;
 
   if (!authHeader || authHeader !== "secret-code") return null;
