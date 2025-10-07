@@ -2,12 +2,15 @@ import http, { IncomingMessage } from "http";
 import express from "express";
 import { WebSocketServer } from "ws";
 import url from "url";
+import cors from "cors";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./lib/auth.js";
 
 function authenticateUpgrade(request: IncomingMessage) {
   // get the jwt token or cookie from the header
   // verify the token or cookie against the database
   // if user exists return the user to socket server upgrade connection.
-  
+
   const authHeader = request.headers.authorization;
 
   if (!authHeader || authHeader !== "secret-code") return null;
@@ -21,8 +24,17 @@ function authenticateUpgrade(request: IncomingMessage) {
 }
 
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 const server = http.createServer(app);
+
+app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use(express.json());
 
