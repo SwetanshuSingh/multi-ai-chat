@@ -9,17 +9,9 @@ const App = () => {
   }
 
   return (
-    <main
-      style={{
-        height: "100vh",
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        justifyItems: "center",
-      }}
-    >
-      <button onClick={authenticate} style={{ height: "40px" }}>
-        Sign In With Google
+    <main className="w-full h-screen flex justify-center items-center bg-black">
+      <button className="text-white border border-gray-200 rounded p-2">
+        <p>Sign in With Google</p>
       </button>
     </main>
   );
