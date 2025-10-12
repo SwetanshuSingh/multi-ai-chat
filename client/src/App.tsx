@@ -1,20 +1,27 @@
+import { useEffect } from "react";
 import { authClient } from "./lib/auth-client";
+import { useNavigate } from "react-router";
 
-const App = () => {
-  async function authenticate() {
-    const data = await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "http://localhost:5173",
-    });
-  }
+function App() {
+  const navigate = useNavigate()
+  const { useSession } = authClient;
+  const { data: session, isPending, error, refetch } = useSession();
+
+  useEffect(() => {
+    if (isPending) return;
+
+    if (!isPending && session === null) return;
+
+    if (!isPending && session) navigate("/chat")
+  }, [isPending]);
+
+  console.log(session, isPending);
 
   return (
-    <main className="w-full h-screen flex justify-center items-center bg-black">
-      <button className="text-white border border-gray-200 rounded p-2">
-        <p>Sign in With Google</p>
-      </button>
+    <main className="w-full h-screen bg-black text-white flex justify-center items-center">
+      {isPending ? <p>loading...</p> : <h2>This is home page</h2>}
     </main>
   );
-};
+}
 
 export default App;
